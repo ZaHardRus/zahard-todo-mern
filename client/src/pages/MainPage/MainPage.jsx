@@ -18,7 +18,7 @@ const MainPage = () => {
             })
                 .then(response => setTodos(response.data))
         } catch (e) {
-            console.log(e)
+            alert(e)
         }
     }, [userId])
 
@@ -32,7 +32,7 @@ const MainPage = () => {
             }).then(response => {
                 setTodos([...todos], response.data)
                 getTodos()
-                setText(' ')
+                setText('')
             })
         } catch (e) {
             console.log(e)
@@ -100,8 +100,10 @@ const MainPage = () => {
                         </button>
                     </div>
                 </form>
-
-                <h3>Активные задачи:</h3>
+                <div className={'active-todos'}>
+                    <h3>Активные задачи:</h3>
+                    <button className={'waves-effect waves-light btn blue'} onClick={getTodos}>Обновить список задач</button>
+                </div>
                 <div className="todos">
                     {todos.map((el, i) => {
                         let rootClass = ['row', 'flex', 'todos-item']
