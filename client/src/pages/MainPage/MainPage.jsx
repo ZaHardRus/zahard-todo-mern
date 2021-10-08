@@ -73,7 +73,7 @@ const MainPage = () => {
 
     useEffect(() =>{
         getTodos()
-    }, [getTodos]);
+    }, []);
 
     return (
         <div className='container'>
