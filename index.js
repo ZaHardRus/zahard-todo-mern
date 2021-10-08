@@ -9,6 +9,9 @@ app.use(express.json({extended:true}))
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/api/auth', require('./routes/auth.route'))
 app.use('/api/todo', require('./routes/todo.route'))
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 async function start (){
     try{
