@@ -1,20 +1,20 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
-import { AuthContext } from '../../context/AuthContext'
+import React, {useState, useContext, useCallback, useEffect} from 'react';
+import {AuthContext} from '../../context/AuthContext'
 import axios from 'axios'
 import './MainPage.scss'
 
 const MainPage = () => {
     const [text, setText] = useState('')
-    const { userId } = useContext(AuthContext)
+    const {userId} = useContext(AuthContext)
     const [todos, setTodos] = useState([])
 
-    const getTodos = useCallback(async () => {
+    const getTodos = useCallback(() => {
         try {
-            await axios.get('/api/todo', {
+            axios.get('/api/todo', {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                params: { userId }
+                params: {userId}
             })
                 .then(response => setTodos(response.data))
         } catch (e) {
@@ -26,7 +26,8 @@ const MainPage = () => {
         if (!text) return
         try {
             await axios.post('/api/todo/add', {text, userId}, {
-                headers: { "Content-Type": "application/json" 
+                headers: {
+                    "Content-Type": "application/json"
                 }
             }).then(response => {
                 setTodos([...todos], response.data)
@@ -38,40 +39,40 @@ const MainPage = () => {
         }
     }, [text, userId, todos, getTodos])
 
-    const removeTodo = useCallback(async(id)=>{
-        try{
-            await axios.delete(`/api/todo/delete/${id}`,{id}, {headers:{"Content-Type":"application/json"}})
-            .then(()=>getTodos())
-        }catch(e){
+    const removeTodo = useCallback(async (id) => {
+        try {
+            await axios.delete(`/api/todo/delete/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
+                .then(() => getTodos())
+        } catch (e) {
             console.log(e)
         }
-    },[getTodos])
+    }, [getTodos])
 
-    const toggleCompleted = useCallback(async(id)=>{
-        try{
-            await axios.put(`/api/todo/completed/${id}`,{id},{headers:{"Content-Type":"application/json"}})
-                .then(response=>{
-                    setTodos([...todos],response.data)
+    const toggleCompleted = useCallback(async (id) => {
+        try {
+            await axios.put(`/api/todo/completed/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
+                .then(response => {
+                    setTodos([...todos], response.data)
                     getTodos()
                 })
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
-    },[getTodos,todos])
+    }, [getTodos, todos])
 
-    const toggleImportant = useCallback(async(id)=>{
-        try{
-            await axios.put(`/api/todo/important/${id}`,{id},{headers:{"Content-Type":"application/json"}})
-                .then(response=>{
-                    setTodos([...todos],response.data)
+    const toggleImportant = useCallback(async (id) => {
+        try {
+            await axios.put(`/api/todo/important/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
+                .then(response => {
+                    setTodos([...todos], response.data)
                     getTodos()
                 })
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
-    },[getTodos,todos])
+    }, [getTodos, todos])
 
-    useEffect(() =>{
+    useEffect(() => {
         getTodos()
     }, []);
 
@@ -103,21 +104,23 @@ const MainPage = () => {
                 <h3>Активные задачи:</h3>
                 <div className="todos">
                     {todos.map((el, i) => {
-                        let rootClass = ['row','flex','todos-item']
-                        if(el.completed){
+                        let rootClass = ['row', 'flex', 'todos-item']
+                        if (el.completed) {
                             rootClass.push('completed')
                         }
-                        if(el.important){
+                        if (el.important) {
                             rootClass.push('important')
                         }
-                        return ( 
+                        return (
                             <div className={rootClass.join(' ')} key={i}>
                                 <div className="col todos-num">{i}</div>
                                 <div className="col todos-text">{el.text}</div>
                                 <div className="col todos-btns">
-                                    <i onClick={()=>toggleCompleted(el._id)} className="material-icons blue-text">check</i>
-                                    <i onClick={()=>toggleImportant(el._id)} className="material-icons orange-text">warning</i>
-                                    <i onClick={()=>removeTodo(el._id)} className="material-icons red-text">delete</i>
+                                    <i onClick={() => toggleCompleted(el._id)}
+                                       className="material-icons blue-text">check</i>
+                                    <i onClick={() => toggleImportant(el._id)}
+                                       className="material-icons orange-text">warning</i>
+                                    <i onClick={() => removeTodo(el._id)} className="material-icons red-text">delete</i>
                                 </div>
                             </div>
                         )
