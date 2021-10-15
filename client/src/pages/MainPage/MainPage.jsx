@@ -11,7 +11,7 @@ const MainPage = () => {
 
     const getTodos = useCallback(() => {
         TodoService.getAllTodos(userId)
-            .then(response => setTodos(response.data))
+            .then(response => setTodos([...response.data]))
     }, [userId])
 
     const createTodo = useCallback( () => {
