@@ -10,7 +10,7 @@
         cursor: pointer;
         border-left: 2px solid #2196f3 ;
         position: relative;
-        font-size: 24px;
+        font-size: 16px;
         &.completed{
             .todos-text{
                 text-decoration: line-through;
@@ -43,4 +43,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    @media (max-width: 680px) {
+        justify-content: center;
+        text-align: center;
+    }
+}
+.visibility{
+    display: flex;
+}
+.hidden{
+    display: none;
+}
+@media (max-width: 680px) {
+    h4,h3,button,.add{
+        text-align: center;
+    }
 }

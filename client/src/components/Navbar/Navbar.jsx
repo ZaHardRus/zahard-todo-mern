@@ -9,13 +9,13 @@ const Navbar = () => {
         <nav>
             <div className="nav-wrapper navbar blue">
                 <div className="container">
-                    <a href="/" className="logo left">TODO APP</a>
+                    <Link to="/" className="logo left">TODO APP</Link>
                     {isLogin
                         ? <ul id="nav-mobile" className="right">
-                            <li><Link to="/login" onClick={logout}>Выйти</Link></li>
+                            <li><Link className={'button'} to="/login" onClick={logout}>Выйти</Link></li>
                         </ul>
                         : <ul id="nav-mobile" className="right">
-                            <li><Link to="/login">Войти</Link></li>
+                            <li><Link className={'button'} to="/login">Войти</Link></li>
                         </ul>}
                 </div>
 

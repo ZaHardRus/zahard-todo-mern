@@ -7,19 +7,19 @@ const MainPage = () => {
     const [text, setText] = useState('')
     const [todos, setTodos] = useState([])
     const {userId} = useContext(AuthContext)
-
+    const [click,setClick] = useState(false)
 
     const getTodos = useCallback(() => {
         TodoService.getAllTodos(userId)
             .then(response => setTodos([...response.data]))
     }, [userId])
 
-    const createTodo = useCallback( () => {
-        TodoService.createTodo(text,userId)
+    const createTodo = useCallback(() => {
+        TodoService.createTodo(text, userId)
             .then(() => {
-            getTodos()
-            setText('')
-        })
+                getTodos()
+                setText('')
+            })
     }, [text, userId, getTodos])
 
     const removeTodo = useCallback(async (id) => {
@@ -29,7 +29,7 @@ const MainPage = () => {
 
     const toggleCompleted = useCallback(async (id) => {
         TodoService.toggleCompleted(id)
-            .then(()=>getTodos())
+            .then(() => getTodos())
     }, [getTodos])
 
     const toggleImportant = useCallback(async (id) => {
@@ -59,9 +59,9 @@ const MainPage = () => {
                             <label htmlFor="input">Задача</label>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row add">
                         <button
-                            className='waves-effect waves-light btn blue'
+                            className='waves-effect waves-light btn blue '
                             onClick={createTodo}>
                             Добавить
                         </button>
@@ -84,10 +84,9 @@ const MainPage = () => {
                             rootClass.push('important')
                         }
                         return (
-                            <div className={rootClass.join(' ')} key={i}>
-                                <div className="col todos-num">{i}</div>
-                                <div className="col todos-text">{el.text}</div>
-                                <div className="col todos-btns">
+                            <div  className={rootClass.join(' ')} key={i}>
+                                <div onClick={()=>setClick(prev=>!prev)} className="col todos-text">{el.text}</div>
+                                <div className={`col todos-btns ${click ? 'visibility' : 'hidden'}`}>
                                     <i onClick={() => toggleCompleted(el._id)}
                                        className="material-icons blue-text">check</i>
                                     <i onClick={() => toggleImportant(el._id)}
