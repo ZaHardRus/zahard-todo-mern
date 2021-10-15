@@ -19,7 +19,6 @@ const AuthPage = () => {
             ...form,
             [event.target.name]:event.target.value
         })
-        console.log(form)
     }
 
     const registerHandler = async() => {

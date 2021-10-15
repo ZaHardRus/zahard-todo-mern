@@ -1,79 +1,45 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import {AuthContext} from '../../context/AuthContext'
-import axios from 'axios'
 import './MainPage.scss'
+import {TodoService} from "../../API/TodoService";
 
 const MainPage = () => {
     const [text, setText] = useState('')
-    const {userId} = useContext(AuthContext)
     const [todos, setTodos] = useState([])
+    const {userId} = useContext(AuthContext)
+
 
     const getTodos = useCallback(() => {
-        try {
-            axios.get('/api/todo', {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                params: {userId}
-            })
-                .then(response => setTodos(response.data))
-        } catch (e) {
-            alert(e)
-        }
+        TodoService.getAllTodos(userId)
+            .then(response => setTodos(response.data))
     }, [userId])
 
-    const createTodo = useCallback(async () => {
-        if (!text) return
-        try {
-            await axios.post('/api/todo/add', {text, userId}, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => {
-                setTodos([...todos], response.data)
-                getTodos()
-                setText('')
-            })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [text, userId, todos, getTodos])
+    const createTodo = useCallback( () => {
+        TodoService.createTodo(text,userId)
+            .then(() => {
+            getTodos()
+            setText('')
+        })
+    }, [text, userId, getTodos])
 
     const removeTodo = useCallback(async (id) => {
-        try {
-            await axios.delete(`/api/todo/delete/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
-                .then(() => getTodos())
-        } catch (e) {
-            console.log(e)
-        }
+        TodoService.removeTodo(id)
+            .then(() => getTodos())
     }, [getTodos])
 
     const toggleCompleted = useCallback(async (id) => {
-        try {
-            await axios.put(`/api/todo/completed/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
-                .then(response => {
-                    setTodos([...todos], response.data)
-                    getTodos()
-                })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [getTodos, todos])
+        TodoService.toggleCompleted(id)
+            .then(()=>getTodos())
+    }, [getTodos])
 
     const toggleImportant = useCallback(async (id) => {
-        try {
-            await axios.put(`/api/todo/important/${id}`, {id}, {headers: {"Content-Type": "application/json"}})
-                .then(response => {
-                    setTodos([...todos], response.data)
-                    getTodos()
-                })
-        } catch (e) {
-            console.log(e)
-        }
-    }, [getTodos, todos])
+        TodoService.toggleImportant(id)
+            .then(() => getTodos())
+    }, [getTodos])
 
     useEffect(() => {
         getTodos()
+        // eslint-disable-next-line
     }, [userId]);
 
     return (
@@ -95,14 +61,18 @@ const MainPage = () => {
                     </div>
                     <div className="row">
                         <button
-                            className='waves-effect waves-light btn blue' onClick={createTodo}>
+                            className='waves-effect waves-light btn blue'
+                            onClick={createTodo}>
                             Добавить
                         </button>
                     </div>
                 </form>
                 <div className={'active-todos'}>
                     <h3>Активные задачи:</h3>
-                    <button className={'waves-effect waves-light btn blue'} onClick={getTodos}>Обновить список задач</button>
+                    <button
+                        className={'waves-effect waves-light btn blue'}
+                        onClick={getTodos}>Обновить список задач
+                    </button>
                 </div>
                 <div className="todos">
                     {todos.map((el, i) => {
@@ -124,8 +94,7 @@ const MainPage = () => {
                                        className="material-icons orange-text">warning</i>
                                     <i onClick={() => removeTodo(el._id)} className="material-icons red-text">delete</i>
                                 </div>
-                            </div>
-                        )
+                            </div>)
                     })}
                 </div>
             </div>

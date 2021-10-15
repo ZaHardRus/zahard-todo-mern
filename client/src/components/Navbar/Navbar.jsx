@@ -1,20 +1,24 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import './Navbar.scss'
+import {Link} from "react-router-dom";
 
 const Navbar = () => {
     const { logout, isLogin } = useContext(AuthContext)
     return (
         <nav>
             <div className="nav-wrapper navbar blue">
-                <a href="/" className="brand-logo">MERN APP</a>
-                {isLogin
-                    ? <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><a href="/login" onClick={logout}>Выйти</a></li>
-                    </ul>
-                    : <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><a href="/login">Войти</a></li>
-                    </ul>}
+                <div className="container">
+                    <a href="/" className="logo left">TODO APP</a>
+                    {isLogin
+                        ? <ul id="nav-mobile" className="right">
+                            <li><Link to="/login" onClick={logout}>Выйти</Link></li>
+                        </ul>
+                        : <ul id="nav-mobile" className="right">
+                            <li><Link to="/login">Войти</Link></li>
+                        </ul>}
+                </div>
+
             </div>
         </nav>
     );

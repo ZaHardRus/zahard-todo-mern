@@ -2,7 +2,7 @@ import './App.scss';
 
 import Navbar from './components/Navbar/Navbar';
 import { BrowserRouter } from 'react-router-dom'
-import { useRoutes } from './routes.js'
+import { useRoutes } from './routes/routes.js'
 import { AuthContext } from './context/AuthContext'
 import { useAuth } from './hooks/authHook';
 
