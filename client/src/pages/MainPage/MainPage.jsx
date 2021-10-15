@@ -7,7 +7,7 @@ const MainPage = () => {
     const [text, setText] = useState('')
     const [todos, setTodos] = useState([])
     const {userId} = useContext(AuthContext)
-    const [click,setClick] = useState(false)
+    const [click, setClick] = useState(false)
 
     const getTodos = useCallback(() => {
         TodoService.getAllTodos(userId)
@@ -48,14 +48,16 @@ const MainPage = () => {
                 <h4>Добавить задачу</h4>
                 <form className='form form-login' onSubmit={e => e.preventDefault()}>
                     <div className="row">
-                        <div className="input-field col s12">
-                            <input
-                                value={text}
-                                type="text"
-                                name='input'
-                                className='validate'
-                                onChange={e => setText(e.target.value)}
-                            />
+                        <div>
+                            <div className="input-field col s12">
+                                <input
+                                    value={text}
+                                    type="text"
+                                    name='input'
+                                    className='validate'
+                                    onChange={e => setText(e.target.value)}
+                                />
+                            </div>
                             <label htmlFor="input">Задача</label>
                         </div>
                     </div>
@@ -84,8 +86,8 @@ const MainPage = () => {
                             rootClass.push('important')
                         }
                         return (
-                            <div  className={rootClass.join(' ')} key={i}>
-                                <div onClick={()=>setClick(prev=>!prev)} className="col todos-text">{el.text}</div>
+                            <div className={rootClass.join(' ')} key={i}>
+                                <div onClick={() => setClick(prev => !prev)} className="col todos-text">{el.text}</div>
                                 <div className={`col todos-btns ${click ? 'visibility' : 'hidden'}`}>
                                     <i onClick={() => toggleCompleted(el._id)}
                                        className="material-icons blue-text">check</i>
