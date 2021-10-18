@@ -2,12 +2,13 @@ import React, {useState, useContext, useCallback, useEffect} from 'react';
 import {AuthContext} from '../../context/AuthContext'
 import './MainPage.scss'
 import {TodoService} from "../../API/TodoService";
+import {TodoItem} from "../../components/TodoItem.jsx/TodoItem";
 
 const MainPage = () => {
     const [text, setText] = useState('')
     const [todos, setTodos] = useState([])
     const {userId} = useContext(AuthContext)
-    const [click, setClick] = useState(false)
+
 
     const getTodos = useCallback(() => {
         TodoService.getAllTodos(userId)
@@ -37,6 +38,7 @@ const MainPage = () => {
             .then(() => getTodos())
     }, [getTodos])
 
+
     useEffect(() => {
         getTodos()
         // eslint-disable-next-line
@@ -54,11 +56,13 @@ const MainPage = () => {
                                     value={text}
                                     type="text"
                                     name='input'
+                                    id={'input-addTodo'}
                                     className='validate'
                                     onChange={e => setText(e.target.value)}
                                 />
+                                <label htmlFor="input-addTodo">Задача</label>
                             </div>
-                            <label htmlFor="input">Задача</label>
+
                         </div>
                     </div>
                     <div className="row add">
@@ -71,32 +75,19 @@ const MainPage = () => {
                 </form>
                 <div className={'active-todos'}>
                     <h3>Активные задачи:</h3>
-                    <button
-                        className={'waves-effect waves-light btn blue'}
-                        onClick={getTodos}>Обновить список задач
-                    </button>
+                    {/*<button*/}
+                    {/*    className={'waves-effect waves-light btn blue'}*/}
+                    {/*    onClick={getTodos}>Обновить список задач*/}
+                    {/*</button>*/}
                 </div>
                 <div className="todos">
-                    {todos.map((el, i) => {
-                        let rootClass = ['row', 'flex', 'todos-item']
-                        if (el.completed) {
-                            rootClass.push('completed')
-                        }
-                        if (el.important) {
-                            rootClass.push('important')
-                        }
-                        return (
-                            <div className={rootClass.join(' ')} key={i}>
-                                <div onClick={() => setClick(prev => !prev)} className="col todos-text">{el.text}</div>
-                                <div className={`col todos-btns ${click ? 'visibility' : 'hidden'}`}>
-                                    <i onClick={() => toggleCompleted(el._id)}
-                                       className="material-icons blue-text">check</i>
-                                    <i onClick={() => toggleImportant(el._id)}
-                                       className="material-icons orange-text">warning</i>
-                                    <i onClick={() => removeTodo(el._id)} className="material-icons red-text">delete</i>
-                                </div>
-                            </div>)
-                    })}
+                    {todos.map((el, i) => <TodoItem
+                        el={el}
+                        key={el._id}
+                        removeTodo={removeTodo}
+                        toggleCompleted={toggleCompleted}
+                        toggleImportant={toggleImportant}
+                    />)}
                 </div>
             </div>
         </div>

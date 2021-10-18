@@ -58,27 +58,29 @@ const AuthPage = () => {
                                 <form className='form form-login' onSubmit={e => e.preventDefault()}>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <div>
-                                                <input
-                                                    height={40}
-                                                    type="email"
-                                                    name='email'
-                                                    className="validate"
-                                                    onChange={changeFormHandler}
-                                                />
-                                            </div>
-                                            <label htmlFor="email">email</label>
+
+                                            <input
+                                                height={40}
+                                                type="email"
+                                                id='auth-email'
+                                                name={"email"}
+                                                className="validate"
+                                                onChange={changeFormHandler}
+                                            />
+
+                                            <label htmlFor="auth-email">email</label>
                                         </div>
                                         <div className="input-field col s12">
-                                            <div>
-                                                <input
-                                                    type="password"
-                                                    name='password'
-                                                    className="validate"
-                                                    onChange={changeFormHandler}
-                                                />
-                                            </div>
-                                            <label htmlFor="password">password</label>
+
+                                            <input
+                                                type="password"
+                                                id='auth-password'
+                                                name={"password"}
+                                                className="validate"
+                                                onChange={changeFormHandler}
+                                            />
+
+                                            <label htmlFor="auth-password">password</label>
                                         </div>
                                     </div>
                                     <div className="row group-btn">
